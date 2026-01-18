@@ -1,24 +1,26 @@
 import streamlit as st
 import numpy as np
 import pickle
-with open("model.pkl", "rb") as file:
-    model = pickle.load(file)
 
 st.set_page_config(page_title="Spam Detector", page_icon="📩")
-
-st.title("📩 Spam Detection App")
-st.write("Enter email/message features to check if it is spam")
 
 # Load trained model safely
 @st.cache_resource
 def load_model():
-    with open("spam_model.pkl", "rb") as f:
-        return pickle.load(f)
+    try:
+        with open("spam_model.pkl", "rb") as f:
+            return pickle.load(f)
+    except:
+        return None
 
-try:
-    model = load_model()
-except:
-    st.error("❌ Model file not found. Make sure 'spam_model.pkl' is in the same folder.")
+model = load_model()
+
+st.title("📩 Spam Detection App")
+st.write("Enter email/message features to check if it is spam")
+
+# If model not found, show error but keep UI alive
+if model is None:
+    st.error("❌ Model file not found. Make sure 'spam_model.pkl' is in your GitHub repo.")
     st.stop()
 
 # Input fields
@@ -37,3 +39,4 @@ if st.button("Predict"):
         st.error("🚨 This message is SPAM")
     else:
         st.success("✅ This message is NOT spam")
+

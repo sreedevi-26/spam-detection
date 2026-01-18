@@ -1,6 +1,8 @@
 import streamlit as st
-import pickle
 import numpy as np
+import pickle
+with open("model.pkl", "rb") as file:
+    model = pickle.load(file)
 
 st.set_page_config(page_title="Spam Detector", page_icon="📩")
 
@@ -29,7 +31,7 @@ all_caps = st.selectbox("All caps text?", [0, 1])
 # Predict button
 if st.button("Predict"):
     input_data = np.array([[num_links, num_words, has_offer, sender_score, all_caps]])
-    prediction = spam_model.pkl.predict(input_data)
+    prediction = model.predict(input_data)
 
     if prediction[0] == 1:
         st.error("🚨 This message is SPAM")

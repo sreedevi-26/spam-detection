@@ -32,11 +32,16 @@ all_caps = st.selectbox("All caps text?", [0, 1])
 
 # Predict button
 if st.button("Predict"):
-    input_data = np.array([[num_links, num_words, has_offer, sender_score, all_caps]])
-    prediction = model.predict(input_data)
+    try:
+        input_data = np.array(
+            [[num_links, num_words, has_offer, sender_score, all_caps]],
+            dtype=float
+        )
+        prediction = model.predict(input_data)
 
-    if prediction[0] == 1:
-        st.error("🚨 This message is SPAM")
-    else:
-        st.success("✅ This message is NOT spam")
-
+        if prediction[0] == 1:
+            st.error("🚨 This message is SPAM")
+        else:
+            st.success("✅ This message is NOT spam")
+    except Exception as e:
+        st.error("⚠️ Prediction failed. Check if model expects the same number of features.")

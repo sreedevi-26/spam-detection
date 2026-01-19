@@ -44,4 +44,4 @@ if st.button("Predict"):
         else:
             st.success("✅ This message is NOT spam")
     except Exception as e:
-        st.error("⚠️ Prediction failed. Check if model expects the same number of features.")
+        st.error(". Check if model expects the same number of features.")
